@@ -40,22 +40,20 @@ services:
       com.centurylinklabs.watchtower.enable: "true"
     restart: unless-stopped
 
-  sabnzbd:
-    image: linuxserver/sabnzbd:latest
-    container_name: sabnzbd
-    hostname: sabnzbd
+  nzbget:
+    image: linuxserver/nzbget:latest
+    container_name: nzbget
+    hostname: nzbget
     ports:
-      - "8080:8080"
+      - "6789:6789"
     volumes:
-      - ${CONFIG}/sabnzbd:/config
+      - ${CONFIG}/nzbget:/config
       - ${DOWNLOAD}/complete:/downloads
-      - ${DOWNLOAD}/incomplete:/incomplete-downloads
-      - ${DOWNLOAD}/watch:/watch
     labels:
-      traefik.enable: "true"
-      traefik.port: "8080"
-      traefik.frontend.rule: "Host:sabnzbd.${DOMAIN}"
-      com.centurylinklabs.watchtower.enable: "true"
+      - traefik.enable: "true"
+      - traefik.port: "6789"
+      - traefik.frontend.rule: "Host:nzbget.${DOMAIN}"
+      - com.centurylinklabs.watchtower.enable: "true"
     restart: unless-stopped
 
   sonarr:
